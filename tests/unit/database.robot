@@ -1,19 +1,23 @@
 *** Settings ***
-Documentation     A test suite to validate the database functionality.
-Library           DatabaseLibrary
-Library           OperatingSystem
-Library           ${CURDIR}/RobotDatabase.py    ${DB_FILE}
-Test Setup        Test Setup
-Test Teardown     Test Teardown
+Documentation       A test suite to validate the database functionality.
+
+Library             DatabaseLibrary
+Library             OperatingSystem
+Library             ${CURDIR}/RobotDatabase.py    ${DB_FILE}
+
+Test Setup          Test Setup
+Test Teardown       Test Teardown
+
 
 *** Variables ***
-${DB_FILE}            ${TEMPDIR}${/}test.db
-${DB_NAME}            robots
-${DB_DRIVER}          sqlite3
-${ROBOT_NAME}         robot
-${ROBOT_STATUS}       IDLE
-${ROBOT_NEW_NAME}     Bender
-${ROBOT_NEW_STATUS}   BUSY
+${DB_FILE}              ${TEMPDIR}${/}test.db
+${DB_NAME}              robots
+${DB_DRIVER}            sqlite3
+${ROBOT_NAME}           robot
+${ROBOT_STATUS}         IDLE
+${ROBOT_NEW_NAME}       Bender
+${ROBOT_NEW_STATUS}     BUSY
+
 
 *** Test Cases ***
 Robot Insertion
@@ -28,9 +32,8 @@ Robot Exists
     [Documentation]    Check if a row exists in the database after inserting it.
 
     ${id}    Insert Default Robot
-    ${res}   Robot Exists    ${id}
-    Should Be True           ${res}
-
+    ${res}    Robot Exists    ${id}
+    Should Be True    ${res}
 
 Robot Deletion
     [Documentation]    Delete a row from the database.
@@ -46,7 +49,7 @@ Robot Update Name
     [Documentation]    Update a row in the database.
 
     ${id}    Insert Default Robot
-    Update Robot    ${id}    name=${ROBOT_NEW_NAME}  status=${None}
+    Update Robot    ${id}    name=${ROBOT_NEW_NAME}    status=${None}
     Commit
 
     ${result}    Query    SELECT * FROM ${DB_NAME} WHERE id = ${id}
@@ -69,6 +72,7 @@ Robot Update Invalid Parameters
     Run Keyword And Expect Error    ValueError: At least one of name or status must be provided.
     ...    Update Robot    ${id}    ${None}    ${None}
 
+
 *** Keywords ***
 Test Setup
     [Documentation]    Create a table in the database.
@@ -86,5 +90,5 @@ Insert Default Robot
     Query    INSERT INTO ${DB_NAME} (name, status) VALUES ('${ROBOT_NAME}', '${ROBOT_STATUS}')
 
     ${result}    Query    SELECT last_insert_rowid()
-    Should Not Be Empty   ${result}
-    RETURN     ${result}[0][0]
+    Should Not Be Empty    ${result}
+    RETURN    ${result}[0][0]

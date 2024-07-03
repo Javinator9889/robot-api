@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from os import environ
+from typing import TYPE_CHECKING, TypedDict
 
 from fastapi import FastAPI, HTTPException
 from starlette.status import (
     HTTP_201_CREATED,
-    HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
 )
@@ -15,18 +15,16 @@ from .models import Status
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
-    from typing import TypedDict
 
     from fastapi import Request, Response
 
-    class Robot(TypedDict):
-        id: int
-        name: str
-        status: str
-
+class Robot(TypedDict):
+    id: int
+    name: str
+    status: str
 
 MY_ROBOT = "Bender"
-DATABASE = r"robots.db"
+DATABASE = environ.get("ROBOT_API_DATABASE_PATH", r"robots.db")
 
 app = FastAPI()
 db = Database(DATABASE)
@@ -65,7 +63,7 @@ async def root() -> str:
     return MY_ROBOT
 
 
-@app.get("/{status}")
+@app.get("/echo/{status}")
 async def echo_status(status: Status) -> str:
     """Sets an aribtrary status for Bender.
 
@@ -76,6 +74,17 @@ async def echo_status(status: Status) -> str:
         :obj:`str`: What's the robot status?
     """
     return f"{MY_ROBOT} is {status}"
+
+
+@app.get("/robots")
+async def get_robots() -> list[Robot]:
+    """Gets all the robots in the database.
+
+    Returns:
+        list[dict[str, Any]]: List of robots. See :obj:`Robot`.
+    """
+    robots = db.get_robots()
+    return [{"id": r[0], "name": r[1], "status": r[2]} for r in robots]
 
 
 @app.get("/robot/{id}")
@@ -116,7 +125,7 @@ async def new_robot(name: str, status: Status) -> Robot:
     return {"id": id, "name": name, "status": status}
 
 
-@app.put("/robot/{id}", status_code=HTTP_204_NO_CONTENT)
+@app.put("/robot/{id}")
 async def update_robot(
     id: int, name: str | None = None, status: Status | None = None
 ) -> None:

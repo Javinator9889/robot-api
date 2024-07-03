@@ -13,10 +13,12 @@ fastapi = "^0.111.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.0"
+robotframework-tidy = "^4.13.0"
 
 
 [tool.poetry.group.test.dependencies]
 robotframework-databaselibrary = "^1.4.4"
+robotframework-requests = "^0.9.7"
 
 [build-system]
 requires = ["poetry-core"]

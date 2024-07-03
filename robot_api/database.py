@@ -16,7 +16,6 @@ class Database:
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.connection.commit()
-        self.connection.close()
 
     def create_table(self) -> None:
         self.cursor.execute(
@@ -45,6 +44,11 @@ class Database:
             "INSERT INTO robots (name, status) VALUES (?, ?)", (name, str(status))
         )
         return c.execute("SELECT last_insert_rowid()").fetchone()[0]
+
+    def get_robots(self) -> list[tuple[int, str, str]]:
+        """Get all robots."""
+        self.cursor.execute("SELECT * FROM robots")
+        return self.cursor.fetchall()
 
     def get_robot(self, id: int) -> tuple[int, str, str]:
         """Get a robot by ID."""
