@@ -14,4 +14,5 @@ class Status(StrEnum):
     ERROR = "error"
     UNKNOWN = "unknown"
 
+
 __all__ = ["Status"]
