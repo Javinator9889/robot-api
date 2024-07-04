@@ -95,4 +95,4 @@ class Database:
         query += " LIMIT 1)"
         self.cursor.execute(query, (id,))
 
-        return bool(self.cursor.fetchone())
+        return bool(self.cursor.fetchone()[0])

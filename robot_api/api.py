@@ -96,7 +96,14 @@ async def get_robot(id: int) -> Robot:
 
     Returns:
         dict[str, Any]: Robot information. See :obj:`Robot`.
+
+    Raises:
+        HTTPException: Error `404` if the robot does not exist.
     """
+    if not db.robot_exists(id):
+        raise HTTPException(
+            status_code=HTTP_404_NOT_FOUND, detail=f'Robot "{id}" not found'
+        )
     robot = db.get_robot(id)
 
     return {"id": robot[0], "name": robot[1], "status": robot[2]}

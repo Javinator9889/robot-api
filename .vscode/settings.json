@@ -4,5 +4,8 @@
         "RobotDatabase",
         "remote",
         "fakerlib"
-    ]
+    ],
+    "robot.variables": {
+        "EXECDIR": "${workspaceFolder}",
+    },
 }
