@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "robot-api"
+version = "0.1.0"
+description = "Robot API testing - Demonstration for EuroPython 2024"
+authors = ["Javier Alonso <dev@javinator9889.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+robotframework = "^7.0.1"
+fastapi = "^0.111.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.0"
+robotframework-tidy = "^4.13.0"
+
+
+[tool.poetry.group.test.dependencies]
+robotframework-databaselibrary = "^1.4.4"
+robotframework-requests = "^0.9.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
