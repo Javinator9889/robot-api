@@ -18,10 +18,12 @@ if TYPE_CHECKING:
 
     from fastapi import Request, Response
 
+
 class Robot(TypedDict):
     id: int
     name: str
     status: str
+
 
 MY_ROBOT = "Bender"
 DATABASE = environ.get("ROBOT_API_DATABASE_PATH", r"robots.db")
