@@ -3,7 +3,8 @@
     "robot.libraries.libdoc.needsArgs": [
         "RobotDatabase",
         "remote",
-        "fakerlib"
+        "fakerlib",
+        "API.py",
     ],
     "robot.variables": {
         "EXECDIR": "${workspaceFolder}",

@@ -12,27 +12,27 @@ Robot List
     [Documentation]    Retrieve the list of robots.
     [Tags]    api
 
-    ${json}        API GET /robots On ${SESSION} As JSON
+    ${json}        API GET "/robots" As JSON
     ${expected}    Evaluate          ${ROBOTS}                  modules=json
     Lists Should Be Equal            ${json}         ${expected}
 
 Root Robot
     [Documentation]    Retrieve the root robot.
 
-    ${name}        API GET / On ${SESSION} As text
+    ${name}        API GET "/" As Text
     Should Be Equal As Strings       ${name}         "Bender"
 
 Echo Status
     [Documentation]    Echo the status of a robot.
 
-    ${response}    API GET /echo/idle On ${SESSION} As text
+    ${response}    API GET "/echo/idle" As Text
     Should Be Equal As Strings       ${response}     "Bender is idle"
 
 Verify Robot ID Matches
     [Documentation]    Verifies the robot ID matches the expected value.
     [Tags]    api
 
-    ${data}        API GET /robot/1 On ${SESSION} As JSON
+    ${data}        API GET "/robot/1" As JSON
     API Robot "robot" Should Match Status "idle" In ${data}
 
 Create New Robot
@@ -42,7 +42,7 @@ Create New Robot
     ${response}    POST On Session    ${SESSION}                 /robot/c3po/idle    expected_status=201
     ${robot}    Get From Dictionary   ${response.json()}         id
 
-    ${response}    API GET /robot/${robot} On ${SESSION} As JSON
+    ${response}    API GET "/robot/${robot}" As JSON
     API Robot "c3po" Should Match Status "idle" In ${response}
 
 Delete Robot
