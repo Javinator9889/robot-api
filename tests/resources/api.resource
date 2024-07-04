@@ -17,10 +17,10 @@ ${DB_DRIVER}     sqlite3
 ${ROBOTS}        [{"id": 1, "name": "robot", "status": "idle"}, {"id": 2, "name": "bender", "status": "lost"}]
 
 *** Keywords ***
-API GET ${Path} On ${Session} As ${Format}
+API GET "${Path}" As ${Format}
     [Documentation]    Perform a GET request on the given path for the session. "Format"
     ...            is the format of the response, e.g. "JSON" or "Text".
-    ${response}    GET On Session    ${Session}    ${Path}      expected_status=200
+    ${response}    GET On Session    ${SESSION}    ${Path}      expected_status=200
 
     # Ignore the case of the format
     IF  "${Format.upper()}" == "JSON"
